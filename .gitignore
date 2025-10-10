@@ -1,0 +1,48 @@
+# Virtual environments
+.venv/
+.venv312/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Data directories (exclude large datasets)
+data/
+archive/
+*.csv
+*.jpg
+*.jpeg
+*.png
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Model checkpoints (keep in repo for now)
+# models/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test_*.jpg
+test_*.png
+test_report.json
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

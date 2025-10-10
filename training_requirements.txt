@@ -1,0 +1,8 @@
+torch>=2.2
+torchvision>=0.17
+torchaudio>=2.2
+numpy>=1.23
+opencv-python>=4.8
+Pillow>=9.5
+scipy>=1.10
+scikit-learn>=1.2
