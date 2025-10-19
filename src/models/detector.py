@@ -59,8 +59,8 @@ class LightweightHybridDetector(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             
-            nn.Linear(128, 1),
-            nn.Sigmoid()
+            nn.Linear(128, 1)
+            # Removed Sigmoid - will use BCEWithLogitsLoss instead
         )
     
     def forward(self, img: torch.Tensor, stat_features: torch.Tensor) -> torch.Tensor:
@@ -114,8 +114,8 @@ class SimpleEfficientNetDetector(nn.Module):
             nn.Linear(1280, 512),
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(512, 1),
-            nn.Sigmoid()
+            nn.Linear(512, 1)
+            # Removed Sigmoid - will use BCEWithLogitsLoss instead
         )
     
     def forward(self, img: torch.Tensor) -> torch.Tensor:
@@ -162,8 +162,8 @@ class TinyDetector(nn.Module):
             nn.Linear(256 + num_stat_features, 128),
             nn.ReLU(),
             nn.Dropout(0.3),
-            nn.Linear(128, 1),
-            nn.Sigmoid()
+            nn.Linear(128, 1)
+            # Removed Sigmoid - will use BCEWithLogitsLoss instead
         )
     
     def forward(self, img: torch.Tensor, stat_features: torch.Tensor) -> torch.Tensor:
@@ -189,9 +189,13 @@ def get_model(model_type: str = 'hybrid', **kwargs) -> nn.Module:
     if model_type == 'hybrid':
         return LightweightHybridDetector(**kwargs)
     elif model_type == 'efficientnet':
-        return SimpleEfficientNetDetector(**kwargs)
+        # Remove unsupported kwargs for SimpleEfficientNetDetector
+        supported_kwargs = {k: v for k, v in kwargs.items() if k in ['pretrained', 'dropout']}
+        return SimpleEfficientNetDetector(**supported_kwargs)
     elif model_type == 'tiny':
-        return TinyDetector(**kwargs)
+        # Remove unsupported kwargs for TinyDetector
+        supported_kwargs = {k: v for k, v in kwargs.items() if k in ['num_stat_features']}
+        return TinyDetector(**supported_kwargs)
     else:
         raise ValueError(f"Unknown model type: {model_type}")
 

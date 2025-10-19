@@ -7,6 +7,13 @@ Optimized for RTX 4060 Laptop GPU with:
 - Progress tracking
 """
 
+import sys
+from pathlib import Path
+
+# Add project root to Python path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -15,7 +22,6 @@ from torch.utils.data import DataLoader
 import os
 import time
 from tqdm import tqdm
-from pathlib import Path
 from typing import Dict, Optional
 import json
 
@@ -88,8 +94,8 @@ class LightweightTrainer:
         if hasattr(self.model, 'get_num_params'):
             print(f"   Parameters: {self.model.get_num_params():,}")
         
-        # Loss and optimizer
-        self.criterion = nn.BCELoss()
+        # Loss and optimizer - Using BCEWithLogitsLoss (safer with AMP)
+        self.criterion = nn.BCEWithLogitsLoss()
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
         
         # Learning rate scheduler (cosine annealing)
@@ -169,7 +175,7 @@ class LightweightTrainer:
             
             # Statistics
             running_loss += loss.item()
-            predictions = (outputs > 0.5).float()
+            predictions = (torch.sigmoid(outputs) > 0.5).float()  # Apply sigmoid for prediction
             correct += (predictions == labels).sum().item()
             total += labels.size(0)
             
@@ -219,7 +225,7 @@ class LightweightTrainer:
             
             # Statistics
             running_loss += loss.item()
-            predictions = (outputs > 0.5).float()
+            predictions = (torch.sigmoid(outputs) > 0.5).float()  # Apply sigmoid for prediction
             correct += (predictions == labels).sum().item()
             total += labels.size(0)
         

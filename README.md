@@ -131,6 +131,20 @@ python scripts/predict.py --checkpoint checkpoints/best_model.pth --batch image1
 python scripts/predict.py --checkpoint checkpoints/best_model.pth --folder data/test_images --pattern "*.jpg"
 ```
 
+## Using Custom Data Directories
+
+You can use any dataset folder structure by specifying the path with `--train-dir` and `--val-dir` flags in scripts/train.py and scripts/evaluate.py. For example:
+
+```powershell
+# Use the configured Python environment
+& "D:/Farm Fresh/new/Gen/camera-vs-ai/.venv312/Scripts/python.exe" scripts/train.py --train-dir "archive (2)/my_real_vs_ai_dataset/my_real_vs_ai_dataset" --val-dir "archive (2)/my_real_vs_ai_dataset/my_real_vs_ai_dataset" --model hybrid
+
+# Or if python is in your PATH
+python scripts/train.py --train-dir "archive (2)/my_real_vs_ai_dataset/my_real_vs_ai_dataset" --val-dir "archive (2)/my_real_vs_ai_dataset/my_real_vs_ai_dataset" --model hybrid
+```
+
+The loader will auto-detect subfolders named `real`, `ai`, `ai_images`, etc. If your folder names are different, use the `real_subdir` and `ai_subdir` arguments in the code for explicit mapping.
+
 ## 🧠 How It Works
 
 ### Lightweight Architecture

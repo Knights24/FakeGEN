@@ -12,6 +12,7 @@ import numpy as np
 from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 from src.features import SimpleFeaturesExtractor
+from itertools import chain
 
 
 class LightweightRealVsAIDataset(Dataset):
@@ -34,13 +35,17 @@ class LightweightRealVsAIDataset(Dataset):
                  data_dir: str,
                  transform: Optional[T.Compose] = None,
                  extract_features: bool = True,
-                 max_samples: Optional[int] = None):
+                 max_samples: Optional[int] = None,
+                 real_subdir: Optional[str] = None,
+                 ai_subdir: Optional[str] = None):
         """
         Args:
-            data_dir: Path to data directory containing 'real/' and 'ai/' subdirs
+            data_dir: Path to data directory containing class subfolders
             transform: torchvision transforms
             extract_features: Whether to extract statistical features
             max_samples: Limit number of samples (useful for quick testing)
+            real_subdir: Optional explicit name for the REAL class folder
+            ai_subdir: Optional explicit name for the AI class folder
         """
         self.data_dir = Path(data_dir)
         self.transform = transform
@@ -49,32 +54,70 @@ class LightweightRealVsAIDataset(Dataset):
         if extract_features:
             self.feature_extractor = SimpleFeaturesExtractor()
         
+        # Supported folder name candidates
+        real_candidates = [
+            'real', 'final_real', 'real_images', 'camera', 'photos',
+            'real_humans', 'real_humans_original'
+        ]
+        ai_candidates = [
+            'ai', 'final_ai', 'synthetic', 'ai_images', 'deepfake', 'fake', 'generated'
+        ]
+
+        # If user provided explicit subdir names, use them first
+        if real_subdir:
+            real_candidates = [real_subdir] + real_candidates
+        if ai_subdir:
+            ai_candidates = [ai_subdir] + ai_candidates
+
+        # Resolve class directories
+        def resolve_subdir(base: Path, names: List[str]) -> Optional[Path]:
+            for name in names:
+                p = base / name
+                if p.exists() and p.is_dir():
+                    return p
+            return None
+
+        real_dir = resolve_subdir(self.data_dir, real_candidates)
+        ai_dir = resolve_subdir(self.data_dir, ai_candidates)
+
         # Load file paths and labels
         self.samples = []
         self.labels = []
         
+        # Helper to collect image files recursively
+        supported_exts = ('.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.webp')
+        def collect_images(folder: Path) -> List[Path]:
+            return [p for p in folder.rglob('*') if p.suffix.lower() in supported_exts]
+
         # Real images (label = 0)
-        real_dir = self.data_dir / 'real'
-        if real_dir.exists():
-            real_files = list(real_dir.glob('*.jpg')) + list(real_dir.glob('*.jpeg')) + list(real_dir.glob('*.png'))
-            for img_path in real_files[:max_samples if max_samples else None]:
+        if real_dir is not None:
+            real_files = collect_images(real_dir)
+            if max_samples:
+                real_files = real_files[:max_samples]
+            for img_path in real_files:
                 self.samples.append(str(img_path))
                 self.labels.append(0)
         
         # AI images (label = 1)
-        ai_dir = self.data_dir / 'ai'
-        if ai_dir.exists():
-            ai_files = list(ai_dir.glob('*.jpg')) + list(ai_dir.glob('*.jpeg')) + list(ai_dir.glob('*.png'))
-            for img_path in ai_files[:max_samples if max_samples else None]:
+        if ai_dir is not None:
+            ai_files = collect_images(ai_dir)
+            if max_samples:
+                ai_files = ai_files[:max_samples]
+            for img_path in ai_files:
                 self.samples.append(str(img_path))
                 self.labels.append(1)
         
         if len(self.samples) == 0:
-            raise ValueError(f"No images found in {data_dir}. Expected 'real/' and 'ai/' subdirectories.")
+            raise ValueError(
+                f"No images found in {data_dir}. Expected class subdirectories. "
+                f"Tried real folders: {real_candidates}, ai folders: {ai_candidates}"
+            )
         
-        print(f"Loaded {len(self.samples)} images:")
-        print(f"  - Real: {self.labels.count(0)}")
-        print(f"  - AI: {self.labels.count(1)}")
+        print(f"Loaded {len(self.samples)} images from '{self.data_dir}':")
+        if real_dir is not None:
+            print(f"  - Real [{real_dir.name}]: {self.labels.count(0)}")
+        if ai_dir is not None:
+            print(f"  - AI   [{ai_dir.name}]: {self.labels.count(1)}")
     
     def __len__(self) -> int:
         return len(self.samples)

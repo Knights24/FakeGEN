@@ -3,6 +3,13 @@ Evaluation script for lightweight Real vs AI detector
 Computes detailed metrics: Accuracy, Precision, Recall, F1, ROC-AUC
 """
 
+import sys
+from pathlib import Path
+
+# Add project root to Python path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -10,7 +17,6 @@ import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, roc_curve
 import matplotlib.pyplot as plt
 import seaborn as sns
-from pathlib import Path
 from tqdm import tqdm
 from typing import Dict, Tuple
 
