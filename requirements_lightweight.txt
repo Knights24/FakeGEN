@@ -1,0 +1,32 @@
+# Lightweight Real vs AI Detector - Requirements
+# Optimized for RTX 4060 Laptop GPU
+
+# Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Computer Vision
+opencv-python>=4.8.0
+Pillow>=9.0.0
+
+# Scientific Computing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+scikit-image>=0.21.0
+
+# Data Processing
+pandas>=2.0.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.13.0
+
+# Utilities
+tqdm>=4.65.0
+PyYAML>=6.0
+
+# Progress tracking
+tensorboard>=2.13.0  # Optional: for advanced training visualization

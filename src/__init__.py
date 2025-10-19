@@ -1,5 +1,6 @@
-"""Camera-vs-AI source package.
-
-Contains classical forensic feature extractors under `src.forensics` and
-pipelines such as `src.forensic_pipeline`.
-"""
+﻿\"\"\"
+Real vs AI Image Detector
+A production-ready system for detecting AI-generated images
+\"\"\"
+__version__ = '1.0.0'
+__author__ = 'Knights24'

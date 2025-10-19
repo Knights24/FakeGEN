@@ -1,3 +1,15 @@
-from .image_backbones import build_model, get_backbone_names
-
-__all__ = ["build_model", "get_backbone_names"]
+﻿\"\"\"
+Neural network models
+\"\"\"
+from .detector import (
+    LightweightHybridDetector,
+    SimpleEfficientNetDetector,
+    TinyDetector,
+    get_model
+)
+__all__ = [
+    'LightweightHybridDetector',
+    'SimpleEfficientNetDetector', 
+    'TinyDetector',
+    'get_model'
+]
