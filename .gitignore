@@ -1,48 +1,127 @@
-# Virtual environments
-.venv/
-.venv312/
-venv/
-env/
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Data directories (exclude large datasets)
-data/
-archive/
-*.csv
-*.jpg
-*.jpeg
-*.png
-*.mp4
-*.avi
-*.mov
-*.mkv
+# Virtual Environments
+.venv/
+.venv312/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
 
-# Model checkpoints (keep in repo for now)
-# models/
+# PyTorch
+*.pth
+*.pt
+checkpoints/
+*.ckpt
 
-# IDE files
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS files
+*~
 .DS_Store
-Thumbs.db
 
-# Test files
-test_*.jpg
-test_*.png
-test_report.json
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Data
+data/celebrities/
+data/deepfake_ready/
+data/final_ai/
+data/final_real/
+data/indian_celebrities/
+data/multi_person_real/
+data/raise_dataset/
+data/raise_jpg/
+data/raise_original/
+data/real/
+data/real_humans/
+data/real_humans_original/
+data/synthetic/
+*.csv
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tiff
+*.gif
 
 # Logs
+logs/
 *.log
+tensorboard/
+runs/
+
+# Models & Weights
+models/
+weights/
+*.h5
+*.pkl
+*.pickle
 
 # Temporary files
-tmp/
-temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Documentation builds
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Configuration
+*.env
+.env.local
+config.yaml
+config.json
+
+# Outputs
+outputs/
+results/
+predictions/
+plots/
+*.pdf
+*.svg
+
+# Legacy (keep tracked but don't add new)
+# legacy/ folder is tracked for reference

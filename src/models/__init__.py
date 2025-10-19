@@ -1,6 +1,6 @@
-﻿\"\"\"
+﻿"""
 Neural network models
-\"\"\"
+"""
 from .detector import (
     LightweightHybridDetector,
     SimpleEfficientNetDetector,
