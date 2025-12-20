@@ -1,0 +1,50 @@
+# Deepfake Detection - Requirements
+# ==================================
+# Optimized for ASUS TUF F15 (RTX 4060, CUDA 12.x)
+
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Image Models
+timm>=0.9.0
+efficientnet-pytorch>=0.7.1
+
+# Image Processing
+Pillow>=10.0.0
+opencv-python-headless>=4.8.0
+
+# Data Augmentation (recommended)
+albumentations>=1.3.0
+
+# Scientific Computing
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Machine Learning Utilities
+scikit-learn>=1.3.0
+pandas>=2.0.0
+
+# Metadata Extraction
+exifread>=3.0.0
+
+# Progress Bars
+tqdm>=4.65.0
+
+# Visualization (optional)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Dataset Download
+gdown>=4.7.0
+requests>=2.31.0
+kaggle>=1.5.0
+
+# Logging (optional)
+tensorboard>=2.14.0
+# wandb>=0.15.0  # Uncomment if using Weights & Biases
+
+# Development (optional)
+# jupyter>=1.0.0
+# ipykernel>=6.0.0
